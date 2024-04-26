@@ -287,7 +287,7 @@ namespace StudentHub.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("StudentHub.Data.Models.Setting", b =>
@@ -371,7 +371,7 @@ namespace StudentHub.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UserAccountId] IS NOT NULL");
 
-                    b.ToTable("Student");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("StudentHub.Data.Models.Teacher", b =>
@@ -407,7 +407,7 @@ namespace StudentHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Teacher");
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("CourseStudent", b =>

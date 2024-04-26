@@ -12,8 +12,8 @@ using StudentHub.Data;
 namespace StudentHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240426200611_AddDbModels-Student-Teacher-Course-StudentCourses")]
-    partial class AddDbModelsStudentTeacherCourseStudentCourses
+    [Migration("20240426201507_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -290,7 +290,7 @@ namespace StudentHub.Data.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("StudentHub.Data.Models.Setting", b =>
@@ -374,7 +374,7 @@ namespace StudentHub.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UserAccountId] IS NOT NULL");
 
-                    b.ToTable("Student");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("StudentHub.Data.Models.Teacher", b =>
@@ -410,7 +410,7 @@ namespace StudentHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Teacher");
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("CourseStudent", b =>
