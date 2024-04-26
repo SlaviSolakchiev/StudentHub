@@ -116,6 +116,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
                     this.logger.LogInformation("User logged in.");
                     return this.LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = this.Input.RememberMe });

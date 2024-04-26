@@ -100,7 +100,6 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             this.ReturnUrl = returnUrl;
