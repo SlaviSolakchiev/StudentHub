@@ -12,7 +12,7 @@ using StudentHub.Data;
 namespace StudentHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240426201507_InitialCreate")]
+    [Migration("20240426205215_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

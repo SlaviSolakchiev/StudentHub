@@ -72,7 +72,6 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [DataType(DataType.Password)]
             public string Password { get; set; }
 
             /// <summary>
