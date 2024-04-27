@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentHub.Data;
 
@@ -11,9 +12,11 @@ using StudentHub.Data;
 namespace StudentHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240427120222_RemoveTeacherIDFromCourses")]
+    partial class RemoveTeacherIDFromCourses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,7 +283,12 @@ namespace StudentHub.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Courses");
                 });
@@ -380,9 +388,6 @@ namespace StudentHub.Data.Migrations
                     b.Property<string>("Age")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -402,9 +407,6 @@ namespace StudentHub.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId")
-                        .IsUnique();
 
                     b.HasIndex("IsDeleted");
 
@@ -477,6 +479,17 @@ namespace StudentHub.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StudentHub.Data.Models.Course", b =>
+                {
+                    b.HasOne("StudentHub.Data.Models.Teacher", "Teacher")
+                        .WithMany("Courses")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("StudentHub.Data.Models.Student", b =>
                 {
                     b.HasOne("StudentHub.Data.Models.Teacher", "Teacher")
@@ -492,17 +505,6 @@ namespace StudentHub.Data.Migrations
                     b.Navigation("UserAccount");
                 });
 
-            modelBuilder.Entity("StudentHub.Data.Models.Teacher", b =>
-                {
-                    b.HasOne("StudentHub.Data.Models.Course", "Course")
-                        .WithOne("Teacher")
-                        .HasForeignKey("StudentHub.Data.Models.Teacher", "CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
             modelBuilder.Entity("StudentHub.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
@@ -514,13 +516,10 @@ namespace StudentHub.Data.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("StudentHub.Data.Models.Course", b =>
-                {
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("StudentHub.Data.Models.Teacher", b =>
                 {
+                    b.Navigation("Courses");
+
                     b.Navigation("Students");
                 });
 #pragma warning restore 612, 618

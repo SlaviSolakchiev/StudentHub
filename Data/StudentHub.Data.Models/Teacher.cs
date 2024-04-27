@@ -1,15 +1,14 @@
-﻿using StudentHub.Data.Common.Models;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace StudentHub.Data.Models
+﻿namespace StudentHub.Data.Models
 {
+    using System.Collections.Generic;
+
+    using StudentHub.Data.Common.Models;
+
     public class Teacher : BaseDeletableModel<int>
     {
         public Teacher()
         {
             this.Students = new HashSet<Student>();
-            this.Courses = new HashSet<Course>();
         }
 
         public string FirstName { get; set; }
@@ -18,7 +17,9 @@ namespace StudentHub.Data.Models
 
         public string Age { get; set; }
 
-        public virtual ICollection<Course> Courses { get; set; }
+        public int CourseId { get; set; }
+
+        public Course Course { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
     }
