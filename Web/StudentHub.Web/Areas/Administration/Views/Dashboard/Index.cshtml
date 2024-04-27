@@ -4,4 +4,20 @@
 }
 
 <h1>@this.ViewData["Title"]</h1>
-Settings: @this.Model.SettingsCount
+
+<div class="row row-cols-3 g-5 mt-3">
+
+
+    <div class="col text-center">
+            <a class="btn btn-primary btn-lg" asp-area="Administration" asp-controller="Dashboard" asp-action="AllCourses">AllCourses</a>
+    </div>
+
+    <div class="col text-center">
+        <a class="btn btn-primary btn-lg" asp-area="Administration" asp-controller="Dashboard" asp-action="AllUsers">AllUsers</a>
+    </div>
+
+    <div class="col text-center">
+        <a class="btn btn-primary btn-lg" asp-area="Administration" asp-controller="Dashboard" asp-action="AllCourses">AllCourses</a>
+    </div>
+
+</div>

@@ -65,6 +65,8 @@ namespace StudentHub.Web
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IDashboardService, DashboardService>();
+
         }
 
         private static void Configure(WebApplication app)
