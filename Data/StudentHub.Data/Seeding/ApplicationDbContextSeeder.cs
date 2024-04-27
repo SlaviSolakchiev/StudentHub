@@ -28,6 +28,7 @@
                               new RolesSeeder(),
                               new SettingsSeeder(),
                               new ApplicationUserSeeder(),
+                              new CoursesSeeder(),
                           };
 
             foreach (var seeder in seeders)
