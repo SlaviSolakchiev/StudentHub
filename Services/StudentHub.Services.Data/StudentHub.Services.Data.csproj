@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NPOI" Version="2.7.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\StudentHub.Data.Common\StudentHub.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\StudentHub.Data.Models\StudentHub.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\StudentHub.Web.ViewModels\StudentHub.Web.ViewModels.csproj" />
     <ProjectReference Include="..\StudentHub.Services.Mapping\StudentHub.Services.Mapping.csproj" />
   </ItemGroup>
 
