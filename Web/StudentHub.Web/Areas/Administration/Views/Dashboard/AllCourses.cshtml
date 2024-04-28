@@ -1,1 +1,58 @@
-﻿<h1>Hello from All Courses.</h1>    
+﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
+@model AllCoursesListViewModel;
+
+<h1>Hello from All Courses.</h1>
+
+<table class="table table-bordered ">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            int trCounter = 1;
+            foreach (var item in Model.AllCoursesList)
+            {
+                <tr>
+                    <th scope="row">@trCounter</th>
+                    <td>@item.Name</td>
+                    <td>
+                        <form asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteCourse" asp-route-id="@item.Id" id="deleteForm" method="post">
+                        </form>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+
+                trCounter += 1;
+            }
+
+        }
+    </tbody>
+</table>
+
+
+
+<div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Course</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete this course.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteForm').submit();">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
