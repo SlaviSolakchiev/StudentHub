@@ -1,8 +1,10 @@
 ﻿namespace StudentHub.Web.Areas.Administration.Controllers
 {
+    using Humanizer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using StudentHub.Common;
+    using StudentHub.Data.Models;
     using StudentHub.Services.Data;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
 
@@ -35,20 +37,13 @@
             return this.View(viewModel);
         }
 
-
-        [HttpGet]
-        public IActionResult CreateCourse()
-        {
-            return this.View();
-        }
-
         [HttpPost]
-        public IActionResult CreateCourse(int Id)
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public IActionResult CreateCourse(AllCoursesListViewModel inputModel)
         {
-            return this.Redirect("/");
+            this.coursesService.CreateCourse(inputModel.NameForCreate);
+            return this.RedirectToAction(nameof(this.AllCourses));
         }
-
-        [HttpGet]
 
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]

@@ -9,6 +9,8 @@
     {
         IEnumerable<T> GetAllCourses<T>();
 
+        Task CreateCourse(string name);
+
         Task DeleteAsync(int id);
     }
 }

@@ -21,6 +21,14 @@ namespace StudentHub.Services.Data
             this.coursesRepo = coursesRepo;
         }
 
+        public async Task CreateCourse(string id)
+        {
+            var newCourse = new Course() { Name = id };
+            await this.coursesRepo.AddAsync(newCourse);
+            await this.coursesRepo.SaveChangesAsync();
+
+        }
+
         public async Task DeleteAsync(int id)
         {
             var courseForDelete = this.coursesRepo.All().FirstOrDefaultAsync(x => x.Id == id).Result;

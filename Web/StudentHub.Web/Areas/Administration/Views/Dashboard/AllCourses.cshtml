@@ -3,6 +3,9 @@
 
 <h1>Hello from All Courses.</h1>
 
+<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+    Create course
+</button>
 <table class="table table-bordered ">
     <thead>
         <tr>
@@ -56,3 +59,41 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal" tabindex="-1" id="createModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Course</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer justify-content-center">
+
+                <form asp-area="Administration" asp-controller="Dashboard" asp-action="CreateCourse" method="post" enctype="multipart/form-data col-">
+                    <label asp-for="NameForCreate">Course name</label>
+                    <input asp-for="NameForCreate" class="form-control" placeholder="Name" />
+                    <span asp-validation-for="NameForCreate" class="text-danger"></span>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <input type="submit" class="btn btn-success">
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function forma() {
+        let a = document.getElementById('newCourse');
+
+    }
+
+
+    document.querySelector('#createModal > div > div > div.modal-footer > button.btn.btn-danger').addEventListener('click', forma())
+
+</script>
