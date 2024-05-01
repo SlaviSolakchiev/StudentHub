@@ -2,9 +2,8 @@
 {
     using System.Linq;
 
-    using StudentHub.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+    using StudentHub.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

@@ -32,6 +32,8 @@
 
         public DbSet<Course> Courses { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
