@@ -10,16 +10,16 @@
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (dbContext.Courses.IsNullOrEmpty())
-            {
-                var courses = new List<Course>()
-                {
-                new Course() { Name = "Математика" },
-                new Course() { Name = "Български език и литература" },
-                };
+            // if (dbContext.Courses.IsNullOrEmpty())
+            // {
+            //    var courses = new List<Course>()
+            //    {
+            //    new Course() { Name = "Математика" },
+            //    new Course() { Name = "Български език и литература" },
+            //    };
 
-                await dbContext.Courses.AddRangeAsync(courses);
-            }
+            // await dbContext.Courses.AddRangeAsync(courses);
+            // }
         }
     }
 }

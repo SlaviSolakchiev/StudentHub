@@ -9,7 +9,7 @@
     {
         IEnumerable<T> GetAllCourses<T>();
 
-        Task CreateCourse(string name);
+        Task CreateCourseAsync(string name);
 
         Task DeleteAsync(int id);
     }

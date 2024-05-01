@@ -1,17 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NPOI.SS.Formula.Functions;
-using StudentHub.Data.Common.Repositories;
-using StudentHub.Data.Models;
-using StudentHub.Services.Mapping;
-using StudentHub.Web.ViewModels.Administration.Dashboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentHub.Services.Data
+﻿namespace StudentHub.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+    using StudentHub.Data.Common.Repositories;
+    using StudentHub.Data.Models;
+    using StudentHub.Services.Mapping;
+
     public class CoursesService : ICoursesService
     {
         private readonly IRepository<Course> coursesRepo;
@@ -21,12 +18,11 @@ namespace StudentHub.Services.Data
             this.coursesRepo = coursesRepo;
         }
 
-        public async Task CreateCourse(string id)
+        public async Task CreateCourseAsync(string name)
         {
-            var newCourse = new Course() { Name = id };
+            var newCourse = new Course() { Name = name };
             await this.coursesRepo.AddAsync(newCourse);
             await this.coursesRepo.SaveChangesAsync();
-
         }
 
         public async Task DeleteAsync(int id)

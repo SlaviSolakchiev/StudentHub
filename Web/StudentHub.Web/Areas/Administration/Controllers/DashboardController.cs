@@ -7,6 +7,7 @@
     using StudentHub.Data.Models;
     using StudentHub.Services.Data;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
+    using System.Threading.Tasks;
 
     public class DashboardController : AdministrationController
     {
@@ -39,17 +40,17 @@
 
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public IActionResult CreateCourse(AllCoursesListViewModel inputModel)
+        public async Task<IActionResult> CreateCourse(AllCoursesListViewModel inputModel)
         {
-            this.coursesService.CreateCourse(inputModel.NameForCreate);
+            await this.coursesService.CreateCourseAsync(inputModel.NameForCreate);
             return this.RedirectToAction(nameof(this.AllCourses));
         }
 
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public IActionResult DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
-            this.coursesService.DeleteAsync(id);
+            await this.coursesService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.AllCourses));
         }
 
