@@ -66,7 +66,8 @@ namespace StudentHub.Web
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICoursesService, CoursesService>();
-
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IStudentService, StudentService>();
         }
 
         private static void Configure(WebApplication app)

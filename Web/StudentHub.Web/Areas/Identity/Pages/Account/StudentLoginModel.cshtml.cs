@@ -16,12 +16,12 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
     using Microsoft.Extensions.Logging;
     using StudentHub.Data.Models;
 
-    public class LoginModel : PageModel
+    public class StudentLoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly ILogger<LoginModel> logger;
+        private readonly ILogger<StudentLoginModel> logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public StudentLoginModel(SignInManager<ApplicationUser> signInManager, ILogger<StudentLoginModel> logger)
         {
             this.signInManager = signInManager;
             this.logger = logger;

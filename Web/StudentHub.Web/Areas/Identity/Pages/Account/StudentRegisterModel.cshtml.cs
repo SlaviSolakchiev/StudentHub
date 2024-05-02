@@ -14,36 +14,48 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Tokens;
+    using StudentHub.Common;
     using StudentHub.Data.Models;
+    using StudentHub.Services.Data;
 
-    public class RegisterModel : PageModel
+    public class StudentRegisterModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserStore<ApplicationUser> userStore;
+        private readonly IUserEmailStore<ApplicationUser> emailStore;
+        private readonly ILogger<StudentRegisterModel> logger;
+        private readonly IEmailSender emailSender;
+        private readonly IRoleService roleService;
+        private readonly IStudentService studentService;
 
-        public RegisterModel(
+        public StudentRegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            ILogger<StudentRegisterModel> logger,
+            IEmailSender emailSender,
+            IRoleService roleService,
+            IStudentService studentService)
         {
-            this._userManager = userManager;
-            this._userStore = userStore;
-            this._emailStore = GetEmailStore();
-            this._signInManager = signInManager;
-            this._logger = logger;
-            this._emailSender = emailSender;
+            this.userManager = userManager;
+            this.userStore = userStore;
+            this.emailStore = this.GetEmailStore();
+            this.signInManager = signInManager;
+            this.logger = logger;
+            this.emailSender = emailSender;
+            this.roleService = roleService;
+            this.studentService = studentService;
+            this.Input = new InputModel();
         }
 
         /// <summary>
@@ -71,6 +83,11 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            public InputModel()
+            {
+                this.AllRolesListItems = new List<SelectListItem>();
+            }
+
             /// <summary>
             ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -98,32 +115,61 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Required]
+            [Display(Name = "Firstname")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Lastname")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Age")]
+            public string Age { get; set; }
+
+            public IFormFile Image { get; set; }
+
+            public string RoleId { get; set; }
+
+            public IEnumerable<SelectListItem> AllRolesListItems { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             this.ReturnUrl = returnUrl;
-            this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (this.Input.AllRolesListItems.IsNullOrEmpty())
+            {
+                this.Input.AllRolesListItems = this.roleService.GetAllRoles();
+            }
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= this.Url.Content("~/");
-            this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (this.ModelState.IsValid)
             {
                 var user = this.CreateUser();
 
-                await this._userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
-                await this._emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
-                var result = await this._userManager.CreateAsync(user, this.Input.Password);
+                await this.userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
+                await this.emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
+                var newUserResult = await this.userManager.CreateAsync(user, this.Input.Password);
 
-                if (result.Succeeded)
+                if (newUserResult.Succeeded)
                 {
-                    this._logger.LogInformation("User created a new account with password.");
+                    await this.userManager.AddToRoleAsync(user, GlobalConstants.StudentRoleName);
 
-                    var userId = await this._userManager.GetUserIdAsync(user);
-                    var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+                    await this.studentService.CreateStudentAsync(this.Input.FirstName, this.Input.LastName, this.Input.Age, user.Id);
+
+                    this.logger.LogInformation("User created a new account with password.");
+
+                    var userId = await this.userManager.GetUserIdAsync(user);
+                    var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = this.Url.Page(
                         "/Account/ConfirmEmail",
@@ -131,23 +177,23 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: this.Request.Scheme);
 
-                    await this._emailSender.SendEmailAsync(
+                    await this.emailSender.SendEmailAsync(
                         this.Input.Email,
                         "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (this._userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
-                        await this._signInManager.SignInAsync(user, isPersistent: false);
+                        await this.signInManager.SignInAsync(user, isPersistent: false);
                         return this.LocalRedirect(returnUrl);
                     }
                 }
 
-                foreach (var error in result.Errors)
+                foreach (var error in newUserResult.Errors)
                 {
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -173,11 +219,12 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
 
         private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
-            if (!this._userManager.SupportsUserEmail)
+            if (!this.userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<ApplicationUser>)_userStore;
+
+            return (IUserEmailStore<ApplicationUser>)this.userStore;
         }
     }
 }

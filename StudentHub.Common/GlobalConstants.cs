@@ -9,7 +9,5 @@
         public const string StudentRoleName = "Student";
 
         public const string TeacherRoleName = "Teacher";
-
-
     }
 }

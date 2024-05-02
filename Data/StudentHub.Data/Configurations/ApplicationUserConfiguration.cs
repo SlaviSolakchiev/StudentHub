@@ -1,8 +1,8 @@
 ﻿namespace StudentHub.Data.Configurations
 {
-    using StudentHub.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using StudentHub.Data.Models;
 
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {

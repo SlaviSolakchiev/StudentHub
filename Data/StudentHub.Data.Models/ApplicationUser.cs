@@ -4,9 +4,8 @@ namespace StudentHub.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using StudentHub.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using StudentHub.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -30,6 +29,8 @@ namespace StudentHub.Data.Models
 
         // Student
         public Student Student { get; set; }
+
+        public Image Image { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

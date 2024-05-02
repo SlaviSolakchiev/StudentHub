@@ -13,11 +13,13 @@
     {
         private readonly ISettingsService settingsService;
         private readonly ICoursesService coursesService;
+        private readonly IStudentService studentService;
 
-        public DashboardController(ISettingsService settingsService, ICoursesService coursesService)
+        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService)
         {
             this.settingsService = settingsService;
             this.coursesService = coursesService;
+            this.studentService = studentService;
         }
 
         public IActionResult Index()
@@ -56,6 +58,12 @@
 
         public IActionResult AllUsers()
         {
+            return this.View();
+        }
+
+        public IActionResult AllTeachers()
+        {
+           
             return this.View();
         }
     }
