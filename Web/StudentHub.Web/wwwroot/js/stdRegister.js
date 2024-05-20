@@ -1,13 +1,14 @@
-﻿function handleFileUpload(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+﻿function displaySelectedImage(event, elementId) {
+    const selectedImage = document.getElementById(elementId);
+    const fileInput = event.target;
 
-    reader.onload = function (e) {
-        $('#previewImage').attr('src', e.target.result);
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            selectedImage.src = e.target.result;
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
     }
-
-    reader.readAsDataURL(file);
 }
-
-// Event listener for file input change
-document.getElementById('inputImage').addEventListener('change', handleFileUpload);

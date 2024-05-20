@@ -2,6 +2,7 @@
 {
     public class StudentsCourses
     {
+        public int Id { get; set; }
         public int StudentId { get; set; }
 
         public virtual Student Student { get; set; }

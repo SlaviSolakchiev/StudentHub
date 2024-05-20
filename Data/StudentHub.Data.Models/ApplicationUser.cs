@@ -28,9 +28,7 @@ namespace StudentHub.Data.Models
         public DateTime? DeletedOn { get; set; }
 
         // Student
-        public Student Student { get; set; }
-
-        public Image Image { get; set; }
+        public virtual Student Student { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

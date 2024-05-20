@@ -1,20 +1,18 @@
-﻿namespace StudentHub.Data.Models
-{
-    using System.Collections.Generic;
-
-    using StudentHub.Data.Common.Models;
-
-    public class Course : BaseModel<int>
+﻿    namespace StudentHub.Data.Models
     {
-        public Course()
+        using System.Collections.Generic;
+
+        using StudentHub.Data.Common.Models;
+
+        public class Course : BaseModel<int>
         {
-            this.Students = new HashSet<Student>();
+            public Course()
+            {
+                this.StudentsCourses = new HashSet<StudentsCourses>();
+            }
+
+            public string Name { get; set; }
+
+            public virtual ICollection<StudentsCourses> StudentsCourses { get; set; }
         }
-
-        public string Name { get; set; }
-
-        public virtual ICollection<Student> Students { get; set; }
-
-        public virtual Teacher Teacher { get; set; }
     }
-}

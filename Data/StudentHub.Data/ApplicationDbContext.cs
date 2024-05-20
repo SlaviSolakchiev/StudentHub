@@ -11,6 +11,7 @@
 
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using System.Reflection.Emit;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -28,11 +29,11 @@
 
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<Teacher> Teachers { get; set; }
-
         public DbSet<Course> Courses { get; set; }
 
         public DbSet<Image> Images { get; set; }
+
+        public DbSet<StudentsCourses> StudentsCourses { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -72,6 +73,33 @@
                 var method = SetIsDeletedQueryFilterMethod.MakeGenericMethod(deletableEntityType.ClrType);
                 method.Invoke(null, new object[] { builder });
             }
+
+
+            // Конфигурация на релацията между Student и ApplicationUser
+            builder.Entity<Student>()
+                .HasOne(s => s.UserAccount)
+                .WithOne(ua => ua.Student)
+                .HasForeignKey<Student>(s => s.UserAccountId);
+
+            // Конфигурация на релацията между Student и Image
+            builder.Entity<Student>()
+                .HasOne(s => s.Image)
+                .WithOne(i => i.Student)
+                .HasForeignKey<Student>(s => s.ImageId);
+
+            // Конфигурация на релацията много към много между Student и Course чрез StudentsCourses
+            builder.Entity<StudentsCourses>()
+                .HasKey(sc => new { sc.StudentId, sc.CourseId });
+
+            builder.Entity<StudentsCourses>()
+                .HasOne(sc => sc.Student)
+                .WithMany(s => s.StudentsCourses)
+                .HasForeignKey(sc => sc.StudentId);
+
+            builder.Entity<StudentsCourses>()
+                .HasOne(sc => sc.Course)
+                .WithMany(c => c.StudentsCourses)
+                .HasForeignKey(sc => sc.CourseId);
 
             // Disable cascade delete
             var foreignKeys = entityTypes

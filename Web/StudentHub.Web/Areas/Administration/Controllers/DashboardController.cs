@@ -1,13 +1,12 @@
 ﻿namespace StudentHub.Web.Areas.Administration.Controllers
 {
-    using Humanizer;
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using StudentHub.Common;
-    using StudentHub.Data.Models;
     using StudentHub.Services.Data;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
-    using System.Threading.Tasks;
 
     public class DashboardController : AdministrationController
     {
@@ -56,14 +55,21 @@
             return this.RedirectToAction(nameof(this.AllCourses));
         }
 
+        [HttpGet]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public IActionResult AllUsers()
         {
-            return this.View();
+            var stds = this.studentService.GetAllStudents<AllStudentsInListViewModel>();
+            var viewModel = new AllStudentsListViewModel()
+            {
+                AllUsersList = stds,
+            };
+
+            return this.View(viewModel);
         }
 
         public IActionResult AllTeachers()
         {
-           
             return this.View();
         }
     }

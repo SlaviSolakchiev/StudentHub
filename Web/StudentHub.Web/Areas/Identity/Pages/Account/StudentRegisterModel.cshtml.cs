@@ -7,6 +7,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Text.Encodings.Web;
@@ -14,6 +15,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
@@ -24,6 +26,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
     using StudentHub.Common;
+    using StudentHub.Data.Common.Repositories;
     using StudentHub.Data.Models;
     using StudentHub.Services.Data;
 
@@ -37,6 +40,8 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender emailSender;
         private readonly IRoleService roleService;
         private readonly IStudentService studentService;
+        private readonly IWebHostEnvironment environment;
+        private readonly IRepository<Image> imagesRepository;
 
         public StudentRegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -45,7 +50,9 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             ILogger<StudentRegisterModel> logger,
             IEmailSender emailSender,
             IRoleService roleService,
-            IStudentService studentService)
+            IStudentService studentService,
+            IWebHostEnvironment environment,
+            IRepository<Image> imagesRepository)
         {
             this.userManager = userManager;
             this.userStore = userStore;
@@ -55,6 +62,8 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             this.emailSender = emailSender;
             this.roleService = roleService;
             this.studentService = studentService;
+            this.environment = environment;
+            this.imagesRepository = imagesRepository;
             this.Input = new InputModel();
         }
 
@@ -145,7 +154,6 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
             {
                 this.Input.AllRolesListItems = this.roleService.GetAllRoles();
             }
-
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -162,9 +170,40 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
 
                 if (newUserResult.Succeeded)
                 {
-                    await this.userManager.AddToRoleAsync(user, GlobalConstants.StudentRoleName);
+                    var extension = Path.GetExtension(this.Input.Image.FileName);
 
-                    await this.studentService.CreateStudentAsync(this.Input.FirstName, this.Input.LastName, this.Input.Age, user.Id);
+                    var allowedExtensions = new[] { "jpg", "jpeg", "png", "gif", "JPG", "JPEG" };
+
+                    if (!allowedExtensions.Any(x => extension.EndsWith(x)))
+                    {
+                        throw new Exception($"Invalin image extension {extension}");
+                    }
+
+                    try
+                    {
+                        var dbImage = new Image()
+                        {
+                            Extension = extension,
+                        };
+
+                        var physicalPath = $"{this.environment.WebRootPath}/images/recipes/{dbImage.Id}.{extension}";
+                        var rootPath = this.environment.ContentRootPath;
+                        Directory.CreateDirectory($"{this.environment.WebRootPath}/images/recipes/");
+
+                        using (Stream fileStream = new FileStream(physicalPath, FileMode.Create))
+                        {
+                            await this.Input.Image.CopyToAsync(fileStream);
+                        }
+
+                        await this.studentService.CreateStudentAsync(this.Input.FirstName, this.Input.LastName, this.Input.Age, user.Id, dbImage);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ModelState.AddModelError(string.Empty, ex.Message);
+                        this.RedirectToPage("StudentRegister");
+                    }
+
+                    await this.userManager.AddToRoleAsync(user, GlobalConstants.StudentRoleName);
 
                     this.logger.LogInformation("User created a new account with password.");
 

@@ -2,13 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Http;
     using StudentHub.Data.Models;
 
     public interface IStudentService
     {
-        Task CreateStudentAsync(string firstName, string lastName, string age, string accountId);
+        Task CreateStudentAsync(string firstName, string lastName, string age, string accountId, Image image);
 
-        List<Student> GetAllStudents();
+        IEnumerable<T> GetAllStudents<T>();
     }
 }

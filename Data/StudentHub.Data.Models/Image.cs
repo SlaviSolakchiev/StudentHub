@@ -13,8 +13,8 @@
 
         public string Extension { get; set; }
 
-        public string AddedByUserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
-        public virtual ApplicationUser AddedByUser { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

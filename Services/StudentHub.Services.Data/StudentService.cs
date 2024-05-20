@@ -4,8 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Http;
     using StudentHub.Data.Common.Repositories;
     using StudentHub.Data.Models;
+    using StudentHub.Services.Mapping;
 
     public class StudentService : IStudentService
     {
@@ -18,7 +20,7 @@
             this.imagesRepository = imagesRepository;
         }
 
-        public async Task CreateStudentAsync(string firstName, string lastName, string age, string accountId)
+        public async Task CreateStudentAsync(string firstName, string lastName, string age, string accountId, Image image)
         {
             var student = new Student()
             {
@@ -26,18 +28,21 @@
                 LastName = lastName,
                 Age = age,
                 UserAccountId = accountId,
+                Image = image,
             };
-
-             var img = new Image() { };
-
 
             await this.studentsRepository.AddAsync(student);
             await this.studentsRepository.SaveChangesAsync();
         }
 
-        public List<Student> GetAllStudents()
+        public IEnumerable<T> GetAllStudents<T>()
         {
-            return this.studentsRepository.AllAsNoTracking().ToList();
+            var list = this.studentsRepository.AllAsNoTracking()
+     .OrderBy(x => x.Id)
+     .To<T>()
+     .ToList();
+
+            return list;
         }
     }
 }
