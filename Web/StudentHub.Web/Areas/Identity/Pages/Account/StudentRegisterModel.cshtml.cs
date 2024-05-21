@@ -136,7 +136,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Age")]
-            public string Age { get; set; }
+            public int Age { get; set; }
 
             public IFormFile Image { get; set; }
 
