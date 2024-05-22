@@ -6,6 +6,7 @@ namespace StudentHub.Data.Models
     using StudentHub.Data.Common.Models;
 
     using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {
@@ -27,5 +28,7 @@ namespace StudentHub.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+
     }
 }

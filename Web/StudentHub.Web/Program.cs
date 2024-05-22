@@ -1,4 +1,4 @@
-namespace StudentHub.Web
+    namespace StudentHub.Web
 {
     using System.Reflection;
 
@@ -27,7 +27,7 @@ namespace StudentHub.Web
         {
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder.Services, builder.Configuration);
-            var app = builder.Build();
+                var app = builder.Build();
             Configure(app);
             app.Run();
         }

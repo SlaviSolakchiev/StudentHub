@@ -1,10 +1,13 @@
 ﻿namespace StudentHub.Web.Areas.Administration.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using StudentHub.Common;
+    using StudentHub.Data.Models;
     using StudentHub.Services.Data;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
 
@@ -13,12 +16,14 @@
         private readonly ISettingsService settingsService;
         private readonly ICoursesService coursesService;
         private readonly IStudentService studentService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService)
+        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService, UserManager<ApplicationUser> userManager)
         {
             this.settingsService = settingsService;
             this.coursesService = coursesService;
             this.studentService = studentService;
+            this.userManager = userManager;
         }
 
         public IActionResult Index()
@@ -57,20 +62,20 @@
 
         [HttpGet]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllStudents()
         {
-            var stds = this.studentService.GetAllStudents<AllStudentsInListViewModel>();
+            var stds = await this.studentService.GetAllStudents<AllStudentsInListViewModel>();
+
+            foreach (var student in stds) {
+                student.Roles = this.userManager.GetRolesAsync(student.UserAccount).Result.ToList();
+            }
+
             var viewModel = new AllStudentsListViewModel()
             {
                 AllUsersList = stds,
             };
 
             return this.View(viewModel);
-        }
-
-        public IActionResult AllTeachers()
-        {
-            return this.View();
         }
     }
 }

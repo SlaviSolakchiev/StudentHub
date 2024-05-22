@@ -1,7 +1,6 @@
 ﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
 @model AllStudentsListViewModel;
 
-<h1>Hello from All Courses.</h1>
 
 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
     Create course
@@ -10,11 +9,12 @@
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">StudentID</th>
             <th scope="col">FirstName</th>
             <th scope="col">LastName</th>
-            <th scope="col">UserName</th>
             <th scope="col">Age</th>
             <th scope="col">CreatedOn</th>
+            <th scope="col">Roles</th>
         </tr>
     </thead>
     <tbody>
@@ -25,10 +25,13 @@
             {
                 <tr>
                     <th scope="row">@trCounter</th>
+                    <td>@item.Id</td>
                     <td>@item.FirstName</td>
                     <td>@item.LastName</td>
                     <td>@item.Age</td>
                     <td>@item.CreatedOn</td>
+                    <td>@String.Join(",",item.Roles)</td>               
+
                 </tr>
 
                 trCounter += 1;
@@ -36,3 +39,4 @@
         }
     </tbody>
 </table>
+<h1>HElla</h1>

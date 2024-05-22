@@ -5,13 +5,11 @@
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using StudentHub.Data.Common.Models;
-    using StudentHub.Data.Models;
-
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using System.Reflection.Emit;
+    using StudentHub.Data.Common.Models;
+    using StudentHub.Data.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

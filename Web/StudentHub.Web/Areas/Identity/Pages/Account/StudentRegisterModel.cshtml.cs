@@ -167,7 +167,6 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
                 await this.userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
                 await this.emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
                 var newUserResult = await this.userManager.CreateAsync(user, this.Input.Password);
-
                 if (newUserResult.Succeeded)
                 {
                     var extension = Path.GetExtension(this.Input.Image.FileName);
