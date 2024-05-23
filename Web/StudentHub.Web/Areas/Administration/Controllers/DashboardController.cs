@@ -66,7 +66,8 @@
         {
             var stds = await this.studentService.GetAllStudents<AllStudentsInListViewModel>();
 
-            foreach (var student in stds) {
+            foreach (var student in stds)
+            {
                 student.Roles = this.userManager.GetRolesAsync(student.UserAccount).Result.ToList();
             }
 
@@ -77,5 +78,26 @@
 
             return this.View(viewModel);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditStudent(int id)
+        {
+            var viewModel = await this.studentService.GetByIdAsync<EditStudentViewModel>(id);
+            viewModel.Roles = this.userManager.GetRolesAsync(viewModel.UserAccount).Result.ToList();
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStudent(EditStudentViewModel model, int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+            await this.studentService.UpdateAsync(id, model);
+            return this.RedirectToAction(nameof(this.AllStudents));
+        }
+
     }
 }

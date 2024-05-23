@@ -10,6 +10,7 @@
     using StudentHub.Data.Common.Repositories;
     using StudentHub.Data.Models;
     using StudentHub.Services.Mapping;
+    using StudentHub.Web.ViewModels.Administration.Dashboard;
 
     public class StudentService : IStudentService
     {
@@ -51,6 +52,30 @@
      .ToListAsync();
 
             return await list;
+        }
+
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            var std = await this.studentsRepository.AllAsNoTracking()
+                .Where(x => x.Id == id)
+                .To<T>().FirstOrDefaultAsync();
+
+            return std;
+        }
+
+        public async Task UpdateAsync(int id, EditStudentViewModel input)
+        {
+            var std = await this.studentsRepository.AllAsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+            std.FirstName = input.FirstName;
+            std.LastName = input.LastName;
+            std.Age = input.Age;
+            std.UserAccountId = input.UserAccountId;
+            std.UserAccount = input.UserAccount;
+            std.CreatedOn = input.CreatedOn;
+            std.Image = input.Image;
+            std.ImageId = input.ImageId;
+
+            await this.studentsRepository.SaveChangesAsync();
         }
     }
 }

@@ -94,7 +94,6 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
         {
             public InputModel()
             {
-                this.AllRolesListItems = new List<SelectListItem>();
             }
 
             /// <summary>
@@ -142,18 +141,12 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
 
             public string RoleId { get; set; }
 
-            public IEnumerable<SelectListItem> AllRolesListItems { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             this.ReturnUrl = returnUrl;
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (this.Input.AllRolesListItems.IsNullOrEmpty())
-            {
-                this.Input.AllRolesListItems = this.roleService.GetAllRoles();
-            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

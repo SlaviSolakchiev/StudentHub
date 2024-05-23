@@ -1,10 +1,6 @@
 ﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
 @model AllStudentsListViewModel;
 
-
-<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
-    Create course
-</button>
 <table class="table table-bordered ">
     <thead>
         <tr>
@@ -15,6 +11,7 @@
             <th scope="col">Age</th>
             <th scope="col">CreatedOn</th>
             <th scope="col">Roles</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +27,12 @@
                     <td>@item.LastName</td>
                     <td>@item.Age</td>
                     <td>@item.CreatedOn</td>
-                    <td>@String.Join(",",item.Roles)</td>               
+                    <td>@String.Join(",", item.Roles)</td>
+                    <td>
+                        <form method="get" asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@item.Id">
+                            <button type="submit" class="btn btn-secondary active">Edit</button>
+                        </form>
+                    </td>
 
                 </tr>
 
@@ -39,4 +41,3 @@
         }
     </tbody>
 </table>
-<h1>HElla</h1>
