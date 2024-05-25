@@ -77,5 +77,13 @@
 
             await this.studentsRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var std = this.studentsRepository.All().FirstOrDefault(x => x.Id == id);
+
+            this.studentsRepository.Delete(std);
+            await this.studentsRepository.SaveChangesAsync();
+        }
     }
 }
