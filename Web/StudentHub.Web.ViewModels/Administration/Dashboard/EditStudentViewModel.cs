@@ -1,14 +1,15 @@
 ﻿namespace StudentHub.Web.ViewModels.Administration.Dashboard
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using AutoMapper;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using StudentHub.Data.Models;
     using StudentHub.Services.Mapping;
 
-    public class AllStudentsInListViewModel : IMapFrom<Student>, IMapFrom<Image>, IMapFrom<ApplicationRole>, IMapFrom<IdentityUserRole<string>>, IMapFrom<ApplicationUser>
+    public class EditStudentViewModel : IMapFrom<Student>, IMapFrom<Image>, IMapFrom<ApplicationRole>, IMapFrom<IdentityUserRole<string>>, IMapFrom<ApplicationUser>
     {
         public int Id { get; set; }
 

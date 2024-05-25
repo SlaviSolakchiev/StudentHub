@@ -4,6 +4,6 @@
 
     public class AllStudentsListViewModel
     {
-        public IEnumerable<AllStudentsInListViewModel> AllUsersList { get; set; }
+        public IEnumerable<StudentInList> StudentInList { get; set; }
     }
 }

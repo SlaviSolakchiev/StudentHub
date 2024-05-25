@@ -1,9 +1,8 @@
-﻿using StudentHub.Data.Models;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace StudentHub.Web.ViewModels.Administration.Dashboard
+﻿namespace StudentHub.Web.ViewModels.Administration.Dashboard
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class AllCoursesListViewModel
     {
         [Required(ErrorMessage = "Name connot be empty.")]

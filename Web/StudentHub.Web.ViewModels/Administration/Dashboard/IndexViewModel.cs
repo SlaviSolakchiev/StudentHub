@@ -1,4 +1,4 @@
-﻿namespace StudentHub.Web.ViewModels.Administration.Dashboard
+﻿    namespace StudentHub.Web.ViewModels.Administration.Dashboard
 {
     public class IndexViewModel
     {
