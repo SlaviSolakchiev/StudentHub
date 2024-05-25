@@ -34,7 +34,11 @@
                     <td>@student.Age</td>
                     <td>@student.CreatedOn</td>
                     <td>@String.Join(",", student.Roles)</td>
-                    <td>     
+                    <td>
+                        <form method="get" asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@student.Id">
+                            <button type="submit" class="btn btn-secondary active">Edit</button>
+                        </form>
+
                         <form method="post" asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
