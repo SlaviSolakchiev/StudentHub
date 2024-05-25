@@ -162,7 +162,7 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
                 var newUserResult = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (newUserResult.Succeeded)
                 {
-                    var extension = Path.GetExtension(this.Input.Image.FileName);
+                    var extension = Path.GetExtension(this.Input.Image.FileName).TrimStart('.');
 
                     var allowedExtensions = new[] { "jpg", "jpeg", "png", "gif", "JPG", "JPEG" };
 
@@ -178,9 +178,9 @@ namespace StudentHub.Web.Areas.Identity.Pages.Account
                             Extension = extension,
                         };
 
-                        var physicalPath = $"{this.environment.WebRootPath}/images/recipes/{dbImage.Id}.{extension}";
+                        var physicalPath = $"{this.environment.WebRootPath}/images/students/{dbImage.Id}.{extension}";
                         var rootPath = this.environment.ContentRootPath;
-                        Directory.CreateDirectory($"{this.environment.WebRootPath}/images/recipes/");
+                        Directory.CreateDirectory($"{this.environment.WebRootPath}/images/students/");
 
                         using (Stream fileStream = new FileStream(physicalPath, FileMode.Create))
                         {

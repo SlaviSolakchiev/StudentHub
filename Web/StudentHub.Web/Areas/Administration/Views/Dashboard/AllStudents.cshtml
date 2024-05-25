@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">ProfileImage</th>
             <th scope="col">StudentID</th>
             <th scope="col">FirstName</th>
             <th scope="col">LastName</th>
@@ -18,19 +19,24 @@
 
         @{
             int trCounter = 1;
-            foreach (var item in Model.AllUsersList)
+            foreach (var student in Model.StudentInList)
             {
                 <tr>
                     <th scope="row">@trCounter</th>
-                    <td>@item.Id</td>
-                    <td>@item.FirstName</td>
-                    <td>@item.LastName</td>
-                    <td>@item.Age</td>
-                    <td>@item.CreatedOn</td>
-                    <td>@String.Join(",", item.Roles)</td>
-                    <td>
-                        <form method="get" asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@item.Id">
-                            <button type="submit" class="btn btn-secondary active">Edit</button>
+                    <td class="text-center">
+                        <img alt=""
+                             style="width: 45px; height: 55px"
+                             class="rounded-circle" src="@student.ImageUrl" />
+                    </td>
+                    <td>@student.Id</td>
+                    <td>@student.FirstName</td>
+                    <td>@student.LastName</td>
+                    <td>@student.Age</td>
+                    <td>@student.CreatedOn</td>
+                    <td>@String.Join(",", student.Roles)</td>
+                    <td>     
+                        <form method="post" asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id">
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
 

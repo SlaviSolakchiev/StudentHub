@@ -64,21 +64,17 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> AllStudents()
         {
-            var stds = await this.studentService.GetAllStudents<AllStudentsInListViewModel>();
+            var stds = await this.studentService.GetAllStudents<StudentInList>();
 
             foreach (var student in stds)
             {
                 student.Roles = this.userManager.GetRolesAsync(student.UserAccount).Result.ToList();
             }
 
-            var viewModel = new AllStudentsListViewModel()
-            {
-                AllUsersList = stds,
-            };
+            var viewModel = new AllStudentsListViewModel() { StudentInList = stds };
 
             return this.View(viewModel);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> EditStudent(int id)
@@ -99,5 +95,12 @@
             return this.RedirectToAction(nameof(this.AllStudents));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            await this.studentService.DeleteAsync(id);
+
+            return this.RedirectToAction(nameof(this.AllStudents));
+        }
     }
 }
