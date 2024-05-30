@@ -17,13 +17,15 @@
         private readonly ICoursesService coursesService;
         private readonly IStudentService studentService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IRoleService roleService;
 
-        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService, UserManager<ApplicationUser> userManager)
+        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService, UserManager<ApplicationUser> userManager, IRoleService roleService)
         {
             this.settingsService = settingsService;
             this.coursesService = coursesService;
             this.studentService = studentService;
             this.userManager = userManager;
+            this.roleService = roleService;
         }
 
         public IActionResult Index()
@@ -64,7 +66,7 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> AllStudents()
         {
-            var stds = await this.studentService.GetAllStudents<StudentInList>();
+            var stds = await this.studentService.GetAllStudents<StudentInListViewModel>();
 
             foreach (var student in stds)
             {
@@ -80,18 +82,16 @@
         public async Task<IActionResult> EditStudent(int id)
         {
             var viewModel = await this.studentService.GetByIdAsync<EditStudentViewModel>(id);
-            viewModel.Roles = this.userManager.GetRolesAsync(viewModel.UserAccount).Result.ToList();
+
+            viewModel.RolesKeyValue = this.roleService.GetAllRolesAsKeyValuePair();
+
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStudent(EditStudentViewModel model, int id)
+        public async Task<IActionResult> EditStudent(EditStudentViewModel viewModel, int id)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
-            await this.studentService.UpdateAsync(id, model);
+            await this.studentService.UpdateAsync(id, viewModel);
             return this.RedirectToAction(nameof(this.AllStudents));
         }
 

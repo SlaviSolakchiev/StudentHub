@@ -1,7 +1,14 @@
-    namespace StudentHub.Web
+namespace StudentHub.Web
 {
     using System.Reflection;
 
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using StudentHub.Data;
     using StudentHub.Data.Common;
     using StudentHub.Data.Common.Repositories;
@@ -13,21 +20,13 @@
     using StudentHub.Services.Messaging;
     using StudentHub.Web.ViewModels;
 
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder.Services, builder.Configuration);
-                var app = builder.Build();
+            var app = builder.Build();
             Configure(app);
             app.Run();
         }
@@ -85,6 +84,7 @@
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseStaticFiles();
                 app.UseMigrationsEndPoint();
             }
             else

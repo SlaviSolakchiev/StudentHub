@@ -3,10 +3,8 @@ namespace StudentHub.Data.Models
 {
     using System;
 
-    using StudentHub.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
-    using System.Collections.Generic;
+    using StudentHub.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

@@ -1,36 +1,22 @@
 ﻿namespace StudentHub.Web.ViewModels.Administration.Dashboard
 {
-    using System.Collections.Generic;
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Identity;
+    using AutoMapper;
     using StudentHub.Data.Models;
     using StudentHub.Services.Mapping;
+    using System.Collections.Generic;
 
-    public class EditStudentViewModel : IMapFrom<Student>, IMapFrom<Image>, IMapFrom<ApplicationRole>, IMapFrom<IdentityUserRole<string>>, IMapFrom<ApplicationUser>
+    public class EditStudentViewModel : BaseStudentModel, IHaveCustomMappings
     {
         public int Id { get; set; }
 
-        public string FirstName { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> RolesKeyValue { get; set; }
 
-        public string LastName { get; set; }
+        public IEnumerable<string> SelectedRoles { get; set; }
 
-        public int Age { get; set; }
-
-        public string UserAccountId { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public virtual ApplicationUser UserAccount { get; set; }
-
-        public virtual IEnumerable<string> Roles { get; set; }
-
-
-        public virtual Image Image { get; set; }
-
-        public string ImageId { get; set; }
-
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Student, EditStudentViewModel>()
+                .ForMember(x => x.ImageUrl, opt => opt.MapFrom(x => "/images/students/" + x.ImageId + "." + x.Image.Extension));
+        }
     }
 }

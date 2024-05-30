@@ -6,6 +6,6 @@
 
     public interface IRoleService
     {
-        IEnumerable<SelectListItem> GetAllRoles();
+        IEnumerable<KeyValuePair<string, string>> GetAllRolesAsKeyValuePair();
     }
 }

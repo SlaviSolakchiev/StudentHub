@@ -16,13 +16,13 @@
             this.rolesRepository = rolesRepository;
         }
 
-        public IEnumerable<SelectListItem> GetAllRoles()
+        public IEnumerable<KeyValuePair<string, string>> GetAllRolesAsKeyValuePair()
         {
-            return this.rolesRepository.AllAsNoTracking().Select(x => new SelectListItem()
+            return this.rolesRepository.AllAsNoTracking().Select(x => new
             {
-                Text = x.Name,
-                Value = x.Id,
-            }).ToList();
+                x.Id,
+                x.Name,
+            }).ToList().Select(x => new KeyValuePair<string, string>(x.Id, x.Name));
         }
     }
 }

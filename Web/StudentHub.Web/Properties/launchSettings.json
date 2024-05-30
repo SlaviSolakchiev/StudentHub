@@ -6,7 +6,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "nativeDebugging": true
+      "nativeDebugging": true,
+      "use64Bit": true
     },
     "StudentHub.Web": {
       "commandName": "Project",

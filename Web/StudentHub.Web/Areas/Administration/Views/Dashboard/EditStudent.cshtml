@@ -1,1 +1,60 @@
-﻿<h1>hello edit</h1>
+﻿@using StudentHub.Web.ViewModels.Administration.Dashboard;
+@model EditStudentViewModel;
+
+<h1>hello edit</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserAccountId"></label>
+        <input asp-for="UserAccountId" class="form-control" hidden />
+        <span asp-validation-for="UserAccountId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageId"></label>
+        <input asp-for="ImageId" class="form-control" hidden />
+        <span asp-validation-for="ImageId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        @foreach (var role in Model.RolesKeyValue)
+        {
+
+            <div class="form-check">
+                <input type="checkbox" id="@role.Key" name="@role.Value" value="@role.Value" />
+                <label class="col-form-label" for="@role.Key">@role.Value</label>
+            </div>
+
+        }
+    </div>
+    <input type="hidden" id="selectedRoles" asp-for="SelectedRoles"/>
+    <input type="hidden" id="selectedRoles" asp-for="Id" />
+
+    <div class="col-md-3 mt-2">
+        <input type="submit" class="btn btn-success" onclick="IsChecked()" />
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="~/js/edit.js" asp-append-version="true"></script>
+}

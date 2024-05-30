@@ -56,7 +56,7 @@
 
         public async Task<T> GetByIdAsync<T>(int id)
         {
-            var std = await this.studentsRepository.AllAsNoTracking()
+            var std = await this.studentsRepository.All()
                 .Where(x => x.Id == id)
                 .To<T>().FirstOrDefaultAsync();
 
@@ -65,16 +65,18 @@
 
         public async Task UpdateAsync(int id, EditStudentViewModel input)
         {
-            var std = await this.studentsRepository.AllAsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+            var user = await this.userManager.FindByIdAsync(input.UserAccountId);
+            var roles = input.SelectedRoles.FirstOrDefault().Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            var std = this.studentsRepository.All().FirstOrDefault(x => x.Id == id);
+
             std.FirstName = input.FirstName;
             std.LastName = input.LastName;
             std.Age = input.Age;
-            std.UserAccountId = input.UserAccountId;
-            std.UserAccount = input.UserAccount;
-            std.CreatedOn = input.CreatedOn;
-            std.Image = input.Image;
             std.ImageId = input.ImageId;
+            std.UserAccountId = user.Id;
 
+            await this.userManager.AddToRolesAsync(user, roles);
             await this.studentsRepository.SaveChangesAsync();
         }
 
