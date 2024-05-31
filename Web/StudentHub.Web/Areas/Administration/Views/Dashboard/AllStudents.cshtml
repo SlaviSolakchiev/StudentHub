@@ -1,48 +1,55 @@
 ﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
 @model AllStudentsListViewModel;
 
-<table class="table table-bordered ">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">ProfileImage</th>
-            <th scope="col">StudentID</th>
-            <th scope="col">FirstName</th>
-            <th scope="col">LastName</th>
-            <th scope="col">Age</th>
-            <th scope="col">CreatedOn</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
 
-        @{
-            int trCounter = 1;
-            foreach (var student in Model.StudentInList)
-            {
-                <tr>
-                    <th scope="row">@trCounter</th>
-                    <td class="text-center">
-                        <img alt=""
-                             style="width: 45px; height: 55px"
-                             class="rounded-circle" src="@student.ImageUrl" />
-                    </td>
-                    <td>@student.Id</td>
-                    <td>@student.FirstName</td>
-                    <td>@student.LastName</td>
-                    <td>@student.Age</td>
-                    <td>@student.CreatedOn</td>
-                    <td>@String.Join(",", student.Roles)</td>
-                    <td class="row">
-                        <a asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@student.Id" type="submit" class="btn btn-secondary active">Edit</a>
-                        <a asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id" type="submit" class="btn btn-danger">Delete</a>
-                    </td>
+            <table class="table table-light ">
+                <thead>
+                    <tr class="align-items-center">
+                        <th scope="col">#</th>
+                        <th scope="col">ProfileImage</th>
+                        <th scope="col">StudentID</th>
+                        <th scope="col">FirstName</th>
+                        <th scope="col">LastName</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">CreatedOn</th>
+                        <th scope="col">Roles</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="align-items-center">
 
-                </tr>
+                    @{
+                        int trCounter = 1;
+                        foreach (var student in Model.StudentInList)
+                        {
+                            <tr class="text-center align-items-center">
+                                <th class="text-center align-items-center" scope="row">@trCounter</th>
+                                <td class="text-center align-items-center">
+                                    <img alt=""
+                                         style="width: 45px; height: 55px"
+                                         class="rounded-circle" src="@student.ImageUrl" />
+                                </td>
+                                <td>@student.Id</td>
+                                <td>@student.FirstName</td>
+                                <td>@student.LastName</td>
+                                <td>@student.Age</td>
+                                <td>@student.CreatedOn</td>
+                                <td>@String.Join(",", student.Roles)</td>
+                                <td class="m-0 p-0 ">
+                                    <a asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@student.Id" type="submit" class="btn btn-secondary active btn-sm">Edit</a>
+                                    <a asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id" type="submit" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
 
-                trCounter += 1;
-            }
-        }
-    </tbody>
-</table>
+                            </tr>
+
+                            trCounter += 1;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

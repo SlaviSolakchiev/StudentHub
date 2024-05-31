@@ -61,8 +61,4 @@
     <ProjectReference Include="..\StudentHub.Web.Infrastructure\StudentHub.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\StudentHub.Web.ViewModels\StudentHub.Web.ViewModels.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
 </Project>
