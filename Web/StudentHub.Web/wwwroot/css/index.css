@@ -1,0 +1,6 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Sedan+SC&display=swap');
+body > div > main > div.text-center > h1 {
+    font-family: "Sedan SC", serif;
+    font-weight: 400;
+    font-style: normal;
+}
