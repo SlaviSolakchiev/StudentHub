@@ -66,18 +66,34 @@
         public async Task UpdateAsync(int id, EditStudentViewModel input)
         {
             var user = await this.userManager.FindByIdAsync(input.UserAccountId);
-            var roles = input.SelectedRoles.FirstOrDefault().Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> roles = new List<string>();
+
+            if (input.SelectedRoles != null && input.SelectedRoles.Count() > 0)
+            {
+                if (input.SelectedRoles.Any(x => x != null))
+                {
+                    roles = input.SelectedRoles.FirstOrDefault().Split(',', System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+            }
 
             var std = this.studentsRepository.All().FirstOrDefault(x => x.Id == id);
+            if (input != null)
+            {
+                std.FirstName = input.FirstName;
+                std.LastName = input.LastName;
+                std.Age = input.Age;
+                std.ImageId = input.ImageId;
+                std.UserAccountId = user.Id;
 
-            std.FirstName = input.FirstName;
-            std.LastName = input.LastName;
-            std.Age = input.Age;
-            std.ImageId = input.ImageId;
-            std.UserAccountId = user.Id;
 
-            await this.userManager.AddToRolesAsync(user, roles);
-            await this.studentsRepository.SaveChangesAsync();
+                if (user != null || roles != null)
+                {
+                    await this.userManager.RemoveFromRolesAsync(user, this.userManager.GetRolesAsync(user).Result.ToList());
+                    await this.userManager.AddToRolesAsync(user, roles);
+                    await this.studentsRepository.SaveChangesAsync();
+                }
+            }
+
         }
 
         public async Task DeleteAsync(int id)
