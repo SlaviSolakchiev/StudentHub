@@ -46,8 +46,9 @@
 
         }
     </div>
-    <input type="hidden" id="selectedRoles" asp-for="SelectedRoles"/>
-    <input type="hidden" id="selectedRoles" asp-for="Id" />
+    <input hidden id="selectedRoles" asp-for="SelectedRoles"/>
+    <input hidden id="selectedRoles" asp-for="ImageUrl"/>
+    <input hidden="selectedRoles" asp-for="Id"/>
 
     <div class="col-md-3 mt-2">
         <input type="submit" class="btn btn-success" onclick="IsChecked()" />

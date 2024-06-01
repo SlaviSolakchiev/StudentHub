@@ -70,7 +70,7 @@
 
             foreach (var student in stds)
             {
-                student.Roles = this.userManager.GetRolesAsync(student.UserAccount).Result.ToList();
+                student.Roles = this.userManager.GetRolesAsync(await this.userManager.FindByIdAsync(student.UserAccountId)).Result.ToList();
             }
 
             var viewModel = new AllStudentsListViewModel() { StudentInList = stds };
@@ -91,8 +91,15 @@
         [HttpPost]
         public async Task<IActionResult> EditStudent(EditStudentViewModel viewModel, int id)
         {
-            await this.studentService.UpdateAsync(id, viewModel);
-            return this.RedirectToAction(nameof(this.AllStudents));
+            if (this.ModelState.IsValid)
+            {
+                await this.studentService.UpdateAsync(id, viewModel);
+                return this.RedirectToAction(nameof(this.AllStudents));
+            }
+            else
+            {
+                return this.RedirectToAction(nameof(this.EditStudent));
+            }
         }
 
         [HttpPost]

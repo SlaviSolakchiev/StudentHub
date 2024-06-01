@@ -7,6 +7,11 @@
 
     public class EditStudentViewModel : BaseStudentModel, IHaveCustomMappings
     {
+        public EditStudentViewModel()
+        {
+            this.SelectedRoles = new HashSet<string>();
+        }
+
         public int Id { get; set; }
 
         public IEnumerable<KeyValuePair<string, string>> RolesKeyValue { get; set; }
