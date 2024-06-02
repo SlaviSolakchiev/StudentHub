@@ -24,16 +24,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>True</Optimize>
   </PropertyGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\index.css" />
-  </ItemGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="..\..\stylecop.json" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<InternalsVisibleTo Include="StudentHub.Web.Tests" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="wwwroot\startbootstrap-small-business-gh-pages\js\scripts.js" />
 	</ItemGroup>
 
   <ItemGroup>
