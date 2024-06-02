@@ -23,6 +23,8 @@
         {
         }
 
+        public DbSet<Homework> Homeworks { get; set; }
+
         public DbSet<Setting> Settings { get; set; }
 
         public DbSet<Student> Students { get; set; }

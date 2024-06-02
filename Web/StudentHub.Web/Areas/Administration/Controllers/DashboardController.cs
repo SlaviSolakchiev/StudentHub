@@ -30,8 +30,7 @@
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
 
         [HttpGet]
@@ -79,6 +78,7 @@
         }
 
         [HttpGet]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> EditStudent(int id)
         {
             var viewModel = await this.studentService.GetByIdAsync<EditStudentViewModel>(id);
@@ -89,6 +89,7 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> EditStudent(EditStudentViewModel viewModel, int id)
         {
             if (this.ModelState.IsValid)
@@ -103,6 +104,7 @@
         }
 
         [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             await this.studentService.DeleteAsync(id);

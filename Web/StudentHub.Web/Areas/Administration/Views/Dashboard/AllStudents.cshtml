@@ -1,20 +1,19 @@
 ﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
-@model AllStudentsListViewModel;
+@model AllStudentsListViewModel
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-
-            <table class="table table-light ">
+            <table class="table table-light">
                 <thead>
                     <tr class="align-items-center">
                         <th scope="col">#</th>
-                        <th scope="col">ProfileImage</th>
-                        <th scope="col">StudentID</th>
-                        <th scope="col">FirstName</th>
-                        <th scope="col">LastName</th>
+                        <th scope="col">Profile Image</th>
+                        <th scope="col">Student ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Age</th>
-                        <th scope="col">CreatedOn</th>
+                        <th scope="col">Created On</th>
                         <th scope="col">Roles</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -23,17 +22,32 @@
 
                     @{
                         int trCounter = 1;
-                        int modalCounter = 1;
                         foreach (var student in Model.StudentInList)
                         {
                             <tr class="text-center align-items-center">
                                 <th class="text-center align-items-center" scope="row">@trCounter</th>
                                 <td class="text-center align-items-center">
-
                                     <img alt=""
                                          style="width: 45px; height: 55px"
-                                         class="rounded-circle" src="@student.ImageUrl"
+                                         class="rounded-circle"
+                                         src="@student.ImageUrl"
                                          data-toggle="modal" data-target="#modal-@student.Id">
+
+                                    <div class="modal fade" id="modal-@student.Id" tabindex="-1" aria-labelledby="modalLabel-@student.Id" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalLabel-@student.Id">Full Size Image</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    <img src="@student.ImageUrl" alt="" class="img-fluid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>@student.Id</td>
                                 <td>@student.FirstName</td>
@@ -43,38 +57,15 @@
                                 <td>@String.Join(",", student.Roles)</td>
                                 <td class="m-0 p-0 d-inline-flex">
                                     <form asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" method="get">
-                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@student.Id" type="submit" class="btn btn-secondary btn-sm m-2"> Edit</button>
+                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@student.Id" type="submit" class="btn btn-secondary btn-sm m-2">Edit</button>
                                     </form>
 
                                     <form asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" method="post">
-                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id" type="submit" class="btn btn-danger btn-sm m-2"> Delete</button>
+                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@student.Id" type="submit" class="btn btn-danger btn-sm m-2">Delete</button>
                                     </form>
-
                                 </td>
-
-
-                                <div class="modal fade" id="modal-@student.Id" tabindex="-1" aria-labelledby="modalLabel-@student.Id" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modalLabel-@student.Id">Full Size Image</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body text-center">
-                                                <img src="@student.ImageUrl" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
                             </tr>
-
                             trCounter += 1;
-
-
                         }
                     }
                 </tbody>
@@ -83,3 +74,12 @@
     </div>
 </div>
 
+@section css {
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+}

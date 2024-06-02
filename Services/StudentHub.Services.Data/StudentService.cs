@@ -11,6 +11,7 @@
     using StudentHub.Data.Models;
     using StudentHub.Services.Mapping;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
+    using StudentHub.Web.ViewModels.Student;
 
     public class StudentService : IStudentService
     {
@@ -19,14 +20,16 @@
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly IRepository<StudentsCourses> studentsCoursesRepository;
 
-        public StudentService(IDeletableEntityRepository<Student> studentsRepository, IRepository<Image> imagesRepository, IDeletableEntityRepository<ApplicationUser> usersRepository, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public StudentService(IDeletableEntityRepository<Student> studentsRepository, IRepository<Image> imagesRepository, IDeletableEntityRepository<ApplicationUser> usersRepository, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IRepository<StudentsCourses> studentsCoursesRepository)
         {
             this.studentsRepository = studentsRepository;
             this.imagesRepository = imagesRepository;
             this.usersRepository = usersRepository;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.studentsCoursesRepository = studentsCoursesRepository;
         }
 
         public async Task CreateStudentAsync(string firstName, string lastName, int age, string accountId, Image image)
@@ -102,6 +105,13 @@
 
             this.studentsRepository.Delete(std);
             await this.studentsRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CoursesViewModel>> GetCourses(ApplicationUser user)
+        {
+            var stdCourses = await this.studentsRepository.AllAsNoTracking().Where(x => x.UserAccountId == user.Id).To<StudentCoursesViewModel>().FirstOrDefaultAsync();
+
+            return stdCourses.StudentsCourses;
         }
     }
 }
