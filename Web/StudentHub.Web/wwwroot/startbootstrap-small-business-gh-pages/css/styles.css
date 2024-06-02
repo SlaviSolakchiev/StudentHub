@@ -1,0 +1,47 @@
+.card {
+    background-color: #ffffff; /* Променете цвета на фона на карточките */
+}
+
+.bg-secondary {
+    background-color: #6c757d !important; /* Променете цвета на фона на вторичния контейнер */
+}
+
+.text-white {
+    color: #ffffff !important; /* Променете цвета на текста, който е в бял цвят */
+}
+
+.text-dark {
+    color: #343a40 !important; /* Променете цвета на текста, който е в тъмен цвят */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Променете цвета на първичния бутон */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Променете цвета на вторичния бутон */
+}
+
+a {
+    color: #007bff; /* Променете цвета на линковете */
+}
+
+    a:hover {
+        color: #0056b3; /* Променете цвета на линковете при ховър */
+    }
+
+.fa-facebook {
+    color: #3b5998; /* Променете цвета на иконата за Facebook */
+}
+
+.fa-twitter {
+    color: #1da1f2; /* Променете цвета на иконата за Twitter */
+}
+
+.fa-instagram {
+    color: #c13584; /* Променете цвета на иконата за Instagram */
+}
+
+.fa-linkedin {
+    color: #0077b5; /* Променете цвета на иконата за LinkedIn */
+}
