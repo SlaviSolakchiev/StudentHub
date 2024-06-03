@@ -67,6 +67,7 @@ namespace StudentHub.Web
             services.AddTransient<ICoursesService, CoursesService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ITeacherService, TeacherService>();
         }
 
         private static void Configure(WebApplication app)

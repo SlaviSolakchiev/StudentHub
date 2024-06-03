@@ -1,6 +1,7 @@
 ﻿namespace StudentHub.Web.Areas.Administration.Controllers
 {
     using System.Linq;
+    using System.Security.Cryptography.Xml;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -18,14 +19,16 @@
         private readonly IStudentService studentService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRoleService roleService;
+        private readonly ITeacherService teacherService;
 
-        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService, UserManager<ApplicationUser> userManager, IRoleService roleService)
+        public DashboardController(ISettingsService settingsService, ICoursesService coursesService, IStudentService studentService, UserManager<ApplicationUser> userManager, IRoleService roleService, ITeacherService teacherService)
         {
             this.settingsService = settingsService;
             this.coursesService = coursesService;
             this.studentService = studentService;
             this.userManager = userManager;
             this.roleService = roleService;
+            this.teacherService = teacherService;
         }
 
         public IActionResult Index()
@@ -110,6 +113,18 @@
             await this.studentService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.AllStudents));
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> AllTeachers()
+        {
+            var viewModel = new TeachersListViewModel();
+
+            viewModel.StudentsTeachers = await this.teacherService.GetAllTeachersAsync();
+
+            return this.View(viewModel);
         }
     }
 }

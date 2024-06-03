@@ -1,1 +1,46 @@
-﻿<h1>Teachers</h1>
+﻿@using StudentHub.Web.ViewModels.Administration.Dashboard
+@model TeachersListViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">FullName</th>
+                        <th scope="col">Age</th>    
+                        <th scope="col">Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody class="align-items-center">
+
+                    @{
+                        int trCounter = 1;
+                        foreach (var teacher in Model.StudentsTeachers)
+                        {
+                            <tr>
+                                <th class="text-center align-items-center" scope="row">@trCounter</th>
+                                <td>@teacher.Id</td>
+                                <td>@teacher.FullName</td>
+                                <td>@teacher.Age</td>
+                                <td class="m-0 p-0">
+                                    <form asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" method="get">
+                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="EditStudent" asp-route-id="@teacher.Id" type="submit" class="btn btn-secondary btn-sm m-2">Edit</button>
+                                    </form>
+
+                                    <form asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" method="post">
+                                        <button asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteStudent" asp-route-id="@teacher.Id" type="submit" class="btn btn-danger btn-sm m-2">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            trCounter += 1;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
