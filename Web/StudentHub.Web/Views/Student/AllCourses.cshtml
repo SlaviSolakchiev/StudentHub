@@ -11,18 +11,45 @@
             <ul class="dropdown-menu">
                 @foreach (var homework in @course.CourseHomeworks)
                 {
-
-                    <li><a class="dropdown-item" href="#">@homework.Name</a></li>
+                    <li>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal-@homework.Id" data-homework-id="@homework.Id" data-homework-name="@homework.Name" data-homework-description="@homework.Description">@homework.Name</a>
+                    </li>
                 }
             </ul>
         </div>
     }
 }
 
-
 @section Scripts {
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var links = document.querySelectorAll('.dropdown-item');
+            links.forEach(function (link) {
+                var modalId = link.getAttribute('data-homework-id');
+                var modalTitle = link.getAttribute('data-homework-name');
+                var modalDescription = link.getAttribute('data-homework-description');
+                var modalHtml = `
+                            <div class="modal fade" id="exampleModal-${modalId}" tabindex="-1" aria-labelledby="exampleModalLabel-${modalId}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel-${modalId}">${modalTitle}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Съдържание на модала за домашната работа ${modalTitle} -->
+                                                    Описание на домашната работа - ${modalDescription}.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            });
+        });
+    </script>
 }
