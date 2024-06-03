@@ -9,6 +9,7 @@
         public Student()
         {
             this.StudentsCourses = new HashSet<StudentsCourses>();
+            this.StudentsTeachers = new HashSet<StudentsTeachers>();
         }
 
         public string FirstName { get; set; }
@@ -26,5 +27,8 @@
         public virtual Image Image { get; set; }
 
         public string ImageId { get; set; }
+
+        public virtual ICollection<StudentsTeachers> StudentsTeachers { get; set; }
+
     }
 }
