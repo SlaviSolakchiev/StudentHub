@@ -115,7 +115,6 @@
             return this.RedirectToAction(nameof(this.AllStudents));
         }
 
-
         [HttpGet]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> AllTeachers()
