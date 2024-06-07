@@ -75,6 +75,7 @@
             }
 
 
+
             // Конфигурация на релацията между Student и ApplicationUser
             builder.Entity<Student>()
                 .HasOne(s => s.UserAccount)
@@ -87,27 +88,46 @@
                 .WithOne(i => i.Student)
                 .HasForeignKey<Student>(s => s.ImageId);
 
+
             // Конфигурация на релацията много към много между Student и Course чрез StudentsCourses
             builder.Entity<StudentsCourses>()
                 .HasKey(sc => new { sc.StudentId, sc.CourseId });
 
             builder.Entity<StudentsCourses>()
-                .HasOne(sc => sc.Student)
-                .WithMany(s => s.StudentsCourses)
-                .HasForeignKey(sc => sc.StudentId);
+                     .HasOne(sc => sc.Student)
+                     .WithMany(s => s.StudentsCourses)
+                     .HasForeignKey(sc => sc.StudentId)
+                     .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
 
             builder.Entity<StudentsCourses>()
                 .HasOne(sc => sc.Course)
                 .WithMany(c => c.StudentsCourses)
-                .HasForeignKey(sc => sc.CourseId);
+                .HasForeignKey(sc => sc.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
+
+            // Конфигурация на каскадно изтриване за AspNetUserRoles
+            builder.Entity<IdentityUserRole<string>>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
+
+
+            // Конфигурация на каскадно изтриване за AspNetUserRoles
+            builder.Entity<IdentityUserRole<string>>()
+                .HasOne<ApplicationRole>()
+                .WithMany()
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
+
 
             // Disable cascade delete
-            var foreignKeys = entityTypes
-                .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
-            foreach (var foreignKey in foreignKeys)
-            {
-                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            //var foreignKeys = entityTypes
+            //    .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+            //foreach (var foreignKey in foreignKeys)
+            //{
+            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            //}
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
