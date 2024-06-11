@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Reflection.Emit;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
@@ -105,29 +106,30 @@
                 .HasForeignKey(sc => sc.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
 
-            // Конфигурация на каскадно изтриване за AspNetUserRoles
+                                                    // IdentityUserRole configuration
+            builder.Entity<IdentityUserRole<string>>()
+                .HasKey(ur => new { ur.UserId, ur.RoleId });
+
             builder.Entity<IdentityUserRole<string>>()
                 .HasOne<ApplicationUser>()
-                .WithMany()
+                .WithMany(u => u.Roles)
                 .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
+                .OnDelete(DeleteBehavior.Cascade);
 
-
-            // Конфигурация на каскадно изтриване за AspNetUserRoles
             builder.Entity<IdentityUserRole<string>>()
                 .HasOne<ApplicationRole>()
-                .WithMany()
+                .WithMany(r => r.Users)
                 .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             // Disable cascade delete
-            //var foreignKeys = entityTypes
+            // var foreignKeys = entityTypes
             //    .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
-            //foreach (var foreignKey in foreignKeys)
-            //{
+            // foreach (var foreignKey in foreignKeys)
+            // {
             //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-            //}
+            // }
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

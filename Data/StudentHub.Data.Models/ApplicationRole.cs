@@ -2,7 +2,7 @@
 namespace StudentHub.Data.Models
 {
     using System;
-
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Identity;
     using StudentHub.Data.Common.Models;
 
@@ -17,6 +17,7 @@ namespace StudentHub.Data.Models
             : base(name)
         {
             this.Id = Guid.NewGuid().ToString();
+            this.Users = new HashSet<IdentityUserRole<string>>();
         }
 
         public DateTime CreatedOn { get; set; }
@@ -27,6 +28,7 @@ namespace StudentHub.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        public virtual ICollection<IdentityUserRole<string>> Users { get; set; }
 
     }
 }

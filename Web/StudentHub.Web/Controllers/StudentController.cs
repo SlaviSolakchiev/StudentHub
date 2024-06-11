@@ -29,5 +29,16 @@
             viewModel.StudentsCourses = await this.studentService.GetCourses(user);
             return this.View(viewModel);
         }
+
+
+        [HttpGet]
+        [Authorize(Roles = GlobalConstants.StudentRoleName)]
+        public async Task<IActionResult> Grades()
+        {
+            var viewModel = new StudentCoursesViewModel();
+            var user = await this.userManager.GetUserAsync(this.User);
+            viewModel.StudentsCourses = await this.studentService.GetCourses(user);
+            return this.View(viewModel);
+        }
     }
 }
