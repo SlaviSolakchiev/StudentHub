@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http.Features
 
 @{
-    var consentFeature = this.Context.Features.Get<ITrackingConsentFeature>();
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showBanner = !consentFeature?.CanTrack ?? false;
     var cookieString = consentFeature?.CreateConsentCookie();
 }
@@ -14,14 +14,8 @@
             <span aria-hidden="true">Accept</span>
         </button>
     </div>
-    @section Scripts {
-    <script>
-                             (function () {
-                                 var button = document.querySelector("#cookieConsent button[data-cookie-string]");
-                                 button.addEventListener("click", function () {
-                                     document.cookie = button.dataset.cookieString;
-                                 }, false);
-                             })();
-    </script>
-    }
+}
+
+@section Scripts {
+    <script src="~/js/cookiesAccept.js" asp-append-version="true"></script>
 }

@@ -101,10 +101,18 @@
 
         public async Task DeleteAsync(int id)
         {
+
             var std = this.studentsRepository.All().FirstOrDefault(x => x.Id == id);
+
+            if (std != null)
+            {
+            var user = await this.userManager.FindByIdAsync(std.UserAccountId);
 
             this.studentsRepository.Delete(std);
             await this.studentsRepository.SaveChangesAsync();
+
+            await this.userManager.DeleteAsync(user);
+            }
         }
 
         public async Task<IEnumerable<CoursesViewModel>> GetCourses(ApplicationUser user)

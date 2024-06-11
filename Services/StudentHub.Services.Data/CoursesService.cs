@@ -3,8 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
+    using NPOI.OpenXmlFormats.Dml.Diagram;
+    using NPOI.XWPF.UserModel;
     using StudentHub.Data.Common.Repositories;
     using StudentHub.Data.Models;
     using StudentHub.Services.Mapping;
@@ -41,6 +43,25 @@
      .ToList();
 
             return list;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetAllCoursesAsSelectedListItems()
+        {
+            if (this.coursesRepo.AllAsNoTracking().Any())
+            {
+                var courses = await this.coursesRepo.AllAsNoTracking().Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString(),
+                }).ToListAsync();
+
+                return courses;
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 }
