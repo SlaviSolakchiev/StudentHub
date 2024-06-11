@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using StudentHub.Common;
     using StudentHub.Data.Models;
     using StudentHub.Services.Data;
@@ -122,8 +123,20 @@
             var viewModel = new TeachersListViewModel();
 
             viewModel.StudentsTeachers = await this.teacherService.GetAllTeachersAsync();
+            var courses = await this.coursesService.GetAllCoursesAsSelectedListItems();
+            viewModel.CreateTeacherInputModel.Courses = courses;
 
             return this.View(viewModel);
         }
+
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> CreateTeacherAsync(TeachersListViewModel inputModel)
+        {
+            await this.teacherService.CreateTeacherAsync(inputModel.CreateTeacherInputModel);
+
+            return this.RedirectToAction(nameof(this.AllTeachers));
+        }
+
     }
 }

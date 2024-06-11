@@ -30,6 +30,8 @@ namespace StudentHub.Data.Models
         // Student
         public virtual Student Student { get; set; }
 
+        public virtual Teacher Teacher { get; set; }
+
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

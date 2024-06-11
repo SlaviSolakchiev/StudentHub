@@ -20,6 +20,10 @@
 
         public virtual Course Course { get; set; }
 
+        public string UserAccountId { get; set; }
+
+        public virtual ApplicationUser UserAccount { get; set; }
+
         public virtual ICollection<StudentsTeachers> StudentsTeachers { get; set; }
     }
 }
