@@ -1,0 +1,98 @@
+﻿@using StudentHub.Web.ViewModels.Teacher
+@model CourseWithStudentsViewModel;
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <h1>@Model.Teacher.Course.Name</h1>
+
+            <table class="table table-light">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">#</th>
+                        @*    <th scope="col">Profile Image</th> *@
+                        <th scope="col">Student ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Created On</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="align-items-center">
+
+                    @{
+                        int trCounter = 1;
+                        foreach (var student in Model.StudentsCourses)
+                        {
+
+
+
+                            <div class="modal" tabindex="-1" id="modal-@student.Id">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Create Course</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+
+                                            <form asp-controller="Teacher" asp-action="AddGradeToStudent" method="post" enctype="multipart/form-data col-">
+                                                <label asp-for="NewGradeValue">Grade</label>
+                                                <input asp-for="NewGradeValue" class="form-control" placeholder="Grade" />
+                                                <span asp-validation-for="NewGradeValue" class="text-danger"></span>
+
+                                                 <input type="hidden" name="id" value="@Model.NewGradeValue" />
+
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <input type="submit" class="btn btn-success">
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+                            <tr class="text-center align-items-center">
+                                <th class="text-center justify-content-center" scope="row">@trCounter</th>                               
+                                <td>@student.Id</td>
+                                <td>@student.Student.FirstName</td>
+                                <td>@student.Student.LastName</td>
+                                <td>@student.Student.Age</td>
+                                <td>@student.Student.CreatedOn</td>
+                                <td class="m-0 p-0 d-inline-flex">
+                                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-@student.Id">Добави оценка</button>
+                                </td>
+                            </tr>
+                            trCounter += 1;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section css {
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+}

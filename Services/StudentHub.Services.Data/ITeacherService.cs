@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using StudentHub.Data.Models;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
+    using StudentHub.Web.ViewModels.Teacher;
 
     public interface ITeacherService
     {
@@ -11,5 +12,6 @@
 
         Task CreateTeacherAsync(CreateTeacherInputModel model);
 
+        Task<TeacherInfoViewModel> GetTeacherByUserAccountId(ApplicationUser user);
     }
 }

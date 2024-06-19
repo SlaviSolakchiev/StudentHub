@@ -1,15 +1,11 @@
-﻿namespace StudentHub.Data.Models
+﻿namespace StudentHub.Web.ViewModels.Teacher
 {
-    using System.Collections;
+    using StudentHub.Data.Models;
+    using StudentHub.Services.Mapping;
     using System.Collections.Generic;
 
-    public class StudentsCourses
+    public class StudentsInCourseViewModel : IMapFrom<StudentsCourses>
     {
-        public StudentsCourses()
-        {
-            this.Grades = new HashSet<Grade>(); // Използване на HashSet за уникални оценки
-        }
-
         public int Id { get; set; }
 
         public int StudentId { get; set; }
@@ -21,6 +17,5 @@
         public virtual Course Course { get; set; }
 
         public virtual ICollection<Grade> Grades { get; set; }
-
     }
 }

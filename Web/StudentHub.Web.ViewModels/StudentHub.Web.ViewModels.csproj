@@ -26,8 +26,4 @@
     <ProjectReference Include="..\..\Services\StudentHub.Services.Mapping\StudentHub.Services.Mapping.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Teacher\" />
-  </ItemGroup>
-
 </Project>

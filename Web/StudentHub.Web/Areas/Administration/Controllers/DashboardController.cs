@@ -80,7 +80,7 @@
 
             return this.View(viewModel);
         }
-
+            
         [HttpGet]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> EditStudent(int id)
@@ -124,7 +124,7 @@
 
             viewModel.StudentsTeachers = await this.teacherService.GetAllTeachersAsync();
             var courses = await this.coursesService.GetAllCoursesAsSelectedListItems();
-            viewModel.CreateTeacherInputModel.Courses = courses;
+            viewModel.Courses = courses;
 
             return this.View(viewModel);
         }
@@ -133,10 +133,16 @@
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> CreateTeacherAsync(TeachersListViewModel inputModel)
         {
-            await this.teacherService.CreateTeacherAsync(inputModel.CreateTeacherInputModel);
+            if (this.ModelState.IsValid)
+            {
+                await this.teacherService.CreateTeacherAsync(inputModel.CreateTeacherInputModel);
 
-            return this.RedirectToAction(nameof(this.AllTeachers));
+                return this.RedirectToAction(nameof(this.AllTeachers));
+            }
+            else
+            {
+                return this.View(inputModel);
+            }
         }
-
     }
 }

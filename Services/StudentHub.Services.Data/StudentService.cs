@@ -12,6 +12,7 @@
     using StudentHub.Services.Mapping;
     using StudentHub.Web.ViewModels.Administration.Dashboard;
     using StudentHub.Web.ViewModels.Student;
+    using StudentHub.Web.ViewModels.Teacher;
 
     public class StudentService : IStudentService
     {
@@ -120,6 +121,12 @@
             var stdCourses = await this.studentsRepository.AllAsNoTracking().Where(x => x.UserAccountId == user.Id).To<StudentCoursesViewModel>().FirstOrDefaultAsync();
 
             return stdCourses.StudentsCourses;
+        }
+
+        public async Task<IEnumerable<StudentsInCourseViewModel>> GetStudentsInCourse(int courseId)
+        {
+            var studentsList = await this.studentsCoursesRepository.AllAsNoTracking().Where(x => x.CourseId == courseId).To<StudentsInCourseViewModel>().ToListAsync();
+            return studentsList;
         }
     }
 }

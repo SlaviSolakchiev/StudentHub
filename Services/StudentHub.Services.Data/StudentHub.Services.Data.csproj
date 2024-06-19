@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\StudentHub.Data.Common\StudentHub.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\StudentHub.Data.Models\StudentHub.Data.Models.csproj" />
+    <ProjectReference Include="..\..\StudentHub.Common\StudentHub.Common.csproj" />
     <ProjectReference Include="..\..\Web\StudentHub.Web.ViewModels\StudentHub.Web.ViewModels.csproj" />
     <ProjectReference Include="..\StudentHub.Services.Mapping\StudentHub.Services.Mapping.csproj" />
   </ItemGroup>

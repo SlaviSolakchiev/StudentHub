@@ -61,18 +61,22 @@
             <div class="modal-footer justify-content-center">
 
                 <form asp-area="Administration" asp-controller="Dashboard" asp-action="CreateTeacher" method="post" enctype="multipart/form-data col-">
-                    <label asp-for="CreateTeacherInputModel.FullName">Teacher fullname</label>
-                    <input asp-for="CreateTeacherInputModel.FullName" class="form-control" placeholder="Fullname" />
-                    <span asp-validation-for="CreateTeacherInputModel.FullName" class="text-danger"></span>
+                    <div class="form-group">
+                        <label asp-for="CreateTeacherInputModel.FullName">Teacher fullname</label>
+                        <input asp-for="CreateTeacherInputModel.FullName" class="form-control" placeholder="Fullname" />
+                        <span asp-validation-for="CreateTeacherInputModel.FullName" class="text-danger"></span>
+                    </div>
 
-                    <label asp-for="CreateTeacherInputModel.Age">Teacher age</label>
-                    <input asp-for="CreateTeacherInputModel.Age" class="form-control" placeholder="Age" />
-                    <span asp-validation-for="CreateTeacherInputModel.Age" class="text-danger"></span>
+                    <div class="form-group">
+                        <label asp-for="CreateTeacherInputModel.Age">Teacher age</label>
+                        <input asp-for="CreateTeacherInputModel.Age" class="form-control" placeholder="Age" />
+                        <span asp-validation-for="CreateTeacherInputModel.Age" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="CreateTeacherInputModel.CourseId"></label>
-                        <select class="form-select" asp-for="CreateTeacherInputModel.CourseId" asp-items="@Model.CreateTeacherInputModel.Courses">
-                            <option selected>Open this select menu</option>
+                        <select class="form-select" asp-for="CreateTeacherInputModel.CourseId" asp-items="@Model.Courses">
+                            <option selected disabled>Open this select menu</option>
                         </select>
                         <span asp-validation-for="CreateTeacherInputModel.CourseId" class="text-danger"></span>
                     </div>

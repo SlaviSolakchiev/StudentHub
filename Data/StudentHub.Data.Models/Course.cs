@@ -18,5 +18,6 @@
 
         public virtual ICollection<Homework> Homeworks { get; set; }
 
+        public virtual Teacher Teacher { get; set; }
     }
 }

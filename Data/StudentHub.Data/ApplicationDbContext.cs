@@ -24,6 +24,10 @@
         {
         }
 
+        public DbSet<Grade> Grades { get; set; }
+
+        public DbSet<Teacher> Teachers { get; set; }
+
         public DbSet<Homework> Homeworks { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
@@ -106,7 +110,7 @@
                 .HasForeignKey(sc => sc.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);  // Добавено каскадно изтриване
 
-                                                    // IdentityUserRole configuration
+            // IdentityUserRole configuration
             builder.Entity<IdentityUserRole<string>>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -121,6 +125,12 @@
                 .WithMany(r => r.Users)
                 .HasForeignKey(ur => ur.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Grade>()
+                            .HasOne(g => g.StudentsCourses)
+                            .WithMany(sc => sc.Grades)
+                            .HasForeignKey(g => new { g.StudentId, g.CourseId }) // Комбиниран външен ключ
+                            .OnDelete(DeleteBehavior.Cascade); // Ако искате каскадно изтриване
 
 
             // Disable cascade delete
